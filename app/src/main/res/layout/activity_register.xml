@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Register"
+    android:background="#261E2D">
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <ImageButton
+          android:id="@+id/btn_back"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:scaleType="centerCrop"
+          android:src="@drawable/back"
+          android:background="#2F1648"
+          android:padding="3dp"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="返回"
+          android:layout_toRightOf="@id/btn_back"
+          android:textColor="#ffff"
+          android:textSize="30sp"></TextView>
+      <EditText
+          android:id="@+id/et_User"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginTop="50dp"
+          android:layout_marginBottom="20dp"
+          android:hint="User Name"
+          android:textColorHint="#ffff"
+          android:textColor="#ffff"
+          android:textSize="16sp"
+          android:paddingLeft="10dp"
+          android:background="@drawable/yuanjiao"></EditText>
+      <EditText
+          android:id="@+id/et_password"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:layout_margin="20dp"
+          android:layout_below="@id/et_User"
+          android:inputType="textPassword"
+          android:hint="Password"
+          android:textColorHint="#ffff"
+          android:textColor="#ffff"
+          android:textSize="16sp"
+          android:paddingLeft="10dp"
+          android:background="@drawable/yuanjiao"></EditText>
+      <EditText
+          android:id="@+id/et_again"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:layout_margin="20dp"
+          android:layout_below="@id/et_password"
+          android:inputType="textPassword"
+          android:hint="please input again"
+          android:textColorHint="#ffff"
+          android:textColor="#ffff"
+          android:textSize="16sp"
+          android:paddingLeft="10dp"
+          android:background="@drawable/yuanjiao"></EditText>
+      <Button
+          android:id="@+id/btn_resgister"
+          android:layout_width="150dp"
+          android:layout_height="50dp"
+          android:layout_below="@id/et_again"
+          android:layout_marginTop="30dp"
+          android:layout_centerHorizontal="true"
+          android:text="注册"
+          android:background="#DFDFDF"
+          android:textColor="#000000"
+          android:textSize="25sp"></Button>
+
+
+  </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

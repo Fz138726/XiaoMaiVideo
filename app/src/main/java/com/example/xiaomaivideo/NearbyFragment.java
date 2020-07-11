@@ -1,31 +1,41 @@
 package com.example.xiaomaivideo;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class NearbyActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button mBtnMain;
-    private Button mBtnMessage;
-    private Button mBtnMe;
-    private ImageButton mBtnUpload;
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link NearbyFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class NearbyFragment extends Fragment {
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     private ViewPager viewPager;
     private TextView followers;
@@ -42,54 +52,58 @@ public class NearbyActivity extends AppCompatActivity implements View.OnClickLis
     //一倍滚动量
     private int one;
 
+    public NearbyFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment NearbyFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static NearbyFragment newInstance(String param1, String param2) {
+        NearbyFragment fragment = new NearbyFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nearby);
-        mBtnMain=findViewById(R.id.btn_main);
-        mBtnMessage=findViewById(R.id.btn_message);
-        mBtnMe=findViewById(R.id.btn_me);
-        mBtnUpload=findViewById(R.id.btn_upload);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
-        mBtnMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(NearbyActivity.this,MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        mBtnMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(NearbyActivity.this,MessageActivity.class);
-                startActivity(intent);
-            }
-        });
-        mBtnMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(NearbyActivity.this,MeActivity.class);
-                startActivity(intent);
-            }
-        });
-        mBtnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(NearbyActivity.this,UploadVideoActivity.class);
-                startActivity(intent);
-            }
-        });
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_nearby, container, false);
+    }
 
-        viewPager=findViewById(R.id.viewpager);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        viewPager=view.findViewById(R.id.viewpager);
         //LayoutInflater.inflate用于查找布局文件
         LayoutInflater inflater=getLayoutInflater();
         View view1=inflater.inflate(R.layout.follower,null);
         View view2=inflater.inflate(R.layout.neighborhood,null);
-        followers=findViewById(R.id.follower_id);
-        neighbors=findViewById(R.id.neighbor_id);
-        scrollbar=findViewById(R.id.scrollbar);
-        followers.setOnClickListener(this);
-        neighbors.setOnClickListener(this);
+        followers=view.findViewById(R.id.follower_id);
+        neighbors=view.findViewById(R.id.neighbor_id);
+        scrollbar=view.findViewById(R.id.scrollbar);
+        followers.setOnClickListener(onClickListener);
+        neighbors.setOnClickListener(onClickListener);
         pageView =new ArrayList<View>();
         //添加要切换的界面
         pageView.add(view1);
@@ -124,7 +138,7 @@ public class NearbyActivity extends AppCompatActivity implements View.OnClickLis
         //设置viewPager的初始界面为第一个界面
         viewPager.setCurrentItem(0);
         //添加切换界面的监听器
-        viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
+        viewPager.addOnPageChangeListener(new NearbyFragment.MyOnPageChangeListener());
         // 获取滚动条的宽度
         bmpW= BitmapFactory.decodeResource(getResources(),R.drawable.scrollbar).getWidth();
         //为了获取屏幕宽度，新建一个DisplayMetrics对象
@@ -143,19 +157,33 @@ public class NearbyActivity extends AppCompatActivity implements View.OnClickLis
         scrollbar.setImageMatrix(matrix);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.follower_id:
-                //点击时切换到第一页
-                viewPager.setCurrentItem(0);
-                break;
-            case R.id.neighbor_id:
-                //点击时切换到第二页
-                viewPager.setCurrentItem(1);
-                break;
+    View.OnClickListener onClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.follower_id:
+                    //点击时切换到第一页
+                    viewPager.setCurrentItem(0);
+                    break;
+                case R.id.neighbor_id:
+                    //点击时切换到第二页
+                    viewPager.setCurrentItem(1);
+                    break;
+            }
         }
-    }
+    };
+//    public void onClick(View view) {
+//        switch (view.getId()){
+//            case R.id.follower_id:
+//                //点击时切换到第一页
+//                viewPager.setCurrentItem(0);
+//                break;
+//            case R.id.neighbor_id:
+//                //点击时切换到第二页
+//                viewPager.setCurrentItem(1);
+//                break;
+//        }
+//    }
 
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
